@@ -1,12 +1,13 @@
 const api = 'http://api.are.na/v2/channels/';
-const container = document.querySelector('#grid');
+const container = document.querySelector('main');
 const template = document.querySelector('template');
-
-const getChannelFromId = async (_api, _id) => {
-  const response = await fetch(`${_api}${_id}?per=500`, {
+const channelName = document.querySelector('#channel-name');
+const getChannel = async (_api, _identifier) => {
+  const response = await fetch(`${_api}${_identifier}?per=100&page=1#`, {
     method: 'GET'
   });
   const contents = await response.json();
+  console.log(contents);
   return contents.contents;
 };
 
@@ -26,7 +27,9 @@ const parseElements = (_array) => {
 };
 
 async function runFetch() {
-  const channel = await getChannelFromId(api, 2502756);
+  const identifier = channelName.innerText;
+  const channel = await getChannel(api, identifier);
+
   parseElements(await channel);
 }
 runFetch();
