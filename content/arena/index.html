@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>arena magazine</title>
+    <script>
+      window.PagedConfig = { auto: false };
+    </script>
     <script src="./paged.polyfill.js"></script>
     <link rel="stylesheet" href="interface.css" />
     <script src="./script.js" defer></script>
@@ -16,6 +19,7 @@
   <body>
     <main>
       <h1 id="channel-name">did-you-try-it-on-white</h1>
+      <button onclick="window.PagedPolyfill.preview()" class="no-print"> preview</button>
       <!--you can change the channel name to what you want the fetched channel also changes -->
     </main>
     <template>
