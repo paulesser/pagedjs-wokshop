@@ -1,5 +1,7 @@
 # HS Mainz pagedjs workshop
 
+## Was ist pagedjs
+
 ## setup
 
 Wir benutzen heute den vorkonfigurierten pagedjs polyfill. Du kannst pagedjs aber auch selber konfigurieren wenn du die paged.js Datei runterlädst oder das npm-Paket benutzt.
@@ -121,9 +123,56 @@ color: red;
 
 ## toc und counter
 
-## CSS rules that help with layouts
+Um ein Inhaltsverzeichnis mit den richtigen Seitennummern zu erstellen, legen wir unser Inhaltsverzeichnis als Links an.
+z.B.:
+
+```HTML
+      <ul>
+        <li>
+          <a href="#headline1">headline1</a>
+        </li>
+      </ul>
+```
+
+Dies können wir manuell oder [mit JavaScript](https://pagedjs.org/posts/build-a-table-of-contents-from-your-html/) machen.
+Die Seitenzahl fügen wir dann über CSS mit einem pseudo-element ein.
+
+```CSS
+ li a::after{
+    content: target-counter(attr(href), page);
+}
+```
+
+CSS füllt jetzt das Element mit einem Counter der Seite die das Ziel unseres Links hat.
+[CSS Counter](https://pagedjs.org/documentation/6-generated-content/#generated-counters) können wir auch für Seiten- und Zeilenzahlen oder ähnliche Nummerierungen nutzen.
+
+## Hilfreiche CSS-Regeln
+
+### @media print
+
+Um websites für verschiedene Geräte zu gestalten werden [media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries) verwendet. Mit `@media print` können wir spezifisch für den Druck gestalten und mit `@media screen` für den Bildschirm.
+Pagedjs erkennt `@media print` im CSS und setzt die Regeln um.
+
+```CSS
+@media screen{
+    .no-print{
+        display:none;
+    }
+}
+```
+
+Hier haben wir zum Beispiel eine Klasse die im Druck nicht sichtbar ist.
 
 ### break-before, break-after
+
+Wenn wir Elemente wie Aufmacher-Seiten, die immer auf einer Seite alleine sind, haben, dann können wir festlegen das vor und/oder nach ihnen immer das Seitenlayout umgebrochen wird.
+
+```CSS
+.hero{
+    break-after: page;
+    break-before: page;
+}
+```
 
 ### columns
 
