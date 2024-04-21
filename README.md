@@ -51,7 +51,8 @@ Nun können wir loslegen.
 
 Mit dem @page-CCS-Query können wir unser Dokument grundlegend einstellen.
 Dabei können wir unterschiedliche Regeln für links und rechts definieren.
-[https://pagedjs.org/documentation/5-web-design-for-print/#%40page-rule](https://pagedjs.org/documentation/5-web-design-for-print/#%40page-rule)
+[Dokumentation](https://pagedjs.org/documentation/5-web-design-for-print/#%40page-rule)
+[Cheat Sheet](https://pagedjs.org/documentation/cheatsheet/)
 
 ```CSS
 @page:left{
@@ -103,11 +104,26 @@ bleed: 3mm
 }
 ```
 
+### named pages
+
 ## pagedj-Klassen nutzen
+
+Um Elemente links oder rechts spezifisch zu gestalten, müssen wir die page-Klassen nutzen, die pagedjs erstellt.
+
+```CSS
+.pagedjs_left_page p{
+    color: blue;
+}
+.pagedjs_right_page p{
+color: red;
+}
+```
 
 ## toc und counter
 
 ## CSS rules that help with layouts
+
+### break-before, break-after
 
 ### columns
 
