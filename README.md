@@ -418,6 +418,34 @@ p {
 Für Elemente die vom Text umfloßen werden sollen gibt es die CSS Eigenschaft `float`.
 [MDN link](https://developer.mozilla.org/en-US/docs/Web/CSS/float)
 
+## pagedjs Variablen
+Pagedjs stellt zur Berechnung auch diese Variablen zur verfügung (Werte sind nur Beispiel und kommen aus der @page regel)
+```CSS
+/* Seitengröße */
+  --pagedjs-pagebox-width: 148mm;
+  --pagedjs-pagebox-height: 210mm;
+/* Seitengröße mit Anschnitt */
+  --pagedjs-width: calc( 148mm + 3mm + 3mm );
+  --pagedjs-height: calc( 210mm + 3mm + 3mm );
+/* Ränder */
+  --pagedjs-margin-top: 31.5mm;
+  --pagedjs-margin-right: 22mm;
+  --pagedjs-margin-left: 9mm;
+  --pagedjs-margin-bottom: 7mm;
+/* Anschnitt */
+  --pagedjs-bleed-top: 3mm;
+  --pagedjs-bleed-right: 3mm;
+  --pagedjs-bleed-bottom: 3mm;
+  --pagedjs-bleed-left: 3mm;
+```
+
+Diese könnt ihr anwenden um zum Beispiel Dinge in den Anschnitt zu ziehen:
+```CSS
+.pagedjs_left_page img {
+    margin-left: calc(-1 * (var(--pagedjs-bleed-left) + var(--pagedjs-margin-left)))
+}
+```
+Hier geben wir Bildern auf einer linken Seite ein negative Margin, die so groß ist wie die linke Margin + den Anschnitt.
 ## Javascript Hooks
 Für noch mehr Kontrolle stellt [pagedjs hooks](https://pagedjs.org/documentation/10-handlers-hooks-and-custom-javascript/) zur Verfügung, an die man sich an gewissen Momenten der
 Generierung der Druckvorschau hängen kann. (Für Fortgeschrittene)
