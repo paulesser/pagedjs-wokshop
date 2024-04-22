@@ -117,10 +117,10 @@ generellen @page query festgelegt werden!_
 
 ### page Selektoren
 Um spezifische Seiten zu stylen gibt es folgende CSS page Selektoren
-- :first (für die erste Seite)
-- :blank (für alle Seiten ohne Inhalt)
-- :right (alle ungeraden Seiten; alle rechten Seiten)
-- :left (alle geraden Seiten; alle linken Seiten)
+- `:first` (für die erste Seite)
+- `:blank` (für alle Seiten ohne Inhalt)
+- `:right` (alle ungeraden Seiten; alle rechten Seiten)
+- `:left` (alle geraden Seiten; alle linken Seiten)
 
 [Dokumentation](https://pagedjs.org/documentation/5-web-design-for-print/#%40page-rule)
 [Cheat Sheet](https://pagedjs.org/documentation/cheatsheet/)
@@ -166,8 +166,70 @@ Auch hier können wir mit den page Selektoren arbeiten:
     margin: 0;
 }
 ```
+## Für print gestalten
+### @media print
 
-## pagedjs-Klassen nutzen
+Um websites für verschiedene Geräte zu gestalten werden [media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries) verwendet. Mit `@media print` können wir spezifisch für den Druck gestalten und mit `@media screen` für den Bildschirm.
+Pagedjs erkennt `@media print` im CSS und setzt die Regeln um.
+
+_Eigenschaften in `@media print` werden nur beim Druck angewendet. Eigenschaften in `@media screen` nur im Web._
+
+```CSS
+@media print {
+    .no-print {
+        display: none;
+    }
+}
+```
+
+Hier haben wir zum Beispiel eine Klasse die im Druck nicht sichtbar ist.
+
+### break-before, break-after, break-inside
+
+Um den Seitenumfluss/Spaltenumfluss zu beeinflussen gibt es die drei CSS Eigenschaften
+- [break-after](https://developer.mozilla.org/en-US/docs/Web/CSS/break-after?retiredLocale=de)
+- [break-before](https://developer.mozilla.org/en-US/docs/Web/CSS/break-before)
+- [break-inside](https://developer.mozilla.org/en-US/docs/Web/CSS/break-inside)
+#### break-before, break-after
+Wie die Namen schon sagen beeinflusst break-before das Verhalten des Seiten-/Spaltenumflusses vor dem Element
+und break-after den nach dem Element.
+Hier können folgende Werte angegeben werde:
+- `always` (es wird davor/danach auf die nächste Seite/Spalte umgebrochen)
+- `page` (es wird davor/danach auf die nächste Seite umgebrochen)
+- `column` (es wird davor/danach in die nächste Spalte umgebrochen)
+- `left` (es wird davor/danach auf die linke Seite umgebrochen)
+- `right` (es wird davor/danach auf die rechte Seite umgebrochen)
+- `avoid` (es wird versucht einen Seiten-/Spaltenumbruch davor/danach zu umgehen, außer es geht nicht anders)
+- `avoid-page` (nur für Seitenumbrüche)
+- `avoid-column` (nur für Spaltenumbrüche)
+
+#### break-inside
+Mit break-inside können wir versuchen zu verhindern, dass Elemente aufgespalten werden und über eine 
+Seite/Spalte umgebrochen werde.
+
+```CSS
+.non-breaking-block {
+    break-inside: avoid;
+}
+```
+#### Beispiel
+Wenn wir Elemente wie Aufmacher-Seiten, die immer auf einer Seite alleine sind, haben, dann können wir festlegen das vor und/oder nach ihnen immer das Seitenlayout umgebrochen wird.
+
+```CSS
+.hero {
+    break-before: page;
+    break-after: page;
+}
+```
+Sollen Aufmacher Seiten immer links stehen:
+```CSS
+.hero {
+    break-before: left;
+    break-after: page;
+}
+```
+
+### pagedjs-Klassen nutzen
 
 Pagedjs gibt dem page layout einige Klassen. Diese können wir benutzen um Elemente die sich auf bestimmten Seiten befinden zu stylen.
 Diese könnt ihr am besten mit dem Inspect Tool im Browser ansehen.
@@ -190,7 +252,7 @@ Die CSS content Eigenschaft kann benutzt werden um festzulegen was der Inhalt ei
 Das können Text, Bilder, Farbverläufe, HTML attribute, etc. sein. [Hier](https://developer.mozilla.org/en-US/docs/Web/CSS/content#syntax) 
 ist eine kleine Übersicht.
 
-pagedjs erlaubt es uns die Margin Boxen, welche wir am Anfang gesehen haben mit der content Eigenschaft zu befüllen:
+pagedjs erlaubt es uns die Margin Boxen, welche wir am Anfang gesehen haben mit der `content` Eigenschaft zu befüllen:
 ```CSS
 @page:left {
     @bottom-center {
@@ -202,7 +264,7 @@ pagedjs erlaubt es uns die Margin Boxen, welche wir am Anfang gesehen haben mit 
 Nachfolgen schauen wir uns ein paar interessante Inhalte an, die als content eingesetzt werden können.
 ### Counter
 [CSS Counter](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Counter_Styles/Using_CSS_counters) kennt ihr vielleicht von OL Elementen.
-Theoretisch sind counter nur eine Variable (Zahl) die als content benutzt werden kann.
+Theoretisch sind counter nur eine Variable (Zahl) die als `content` benutzt werden kann.
 Diese funktionieren mit zwei CSS Befehlen:
 
 #### Counter Increment
@@ -214,7 +276,7 @@ Als Beispiel bieten sich Fußnoten an.
 }
 ```
 #### Counter Reset
-Mit dem counter-reset legen wir fest, welches Element den Counter zurücksetzt. In unserem Beispiel
+Mit dem `counter-reset` legen wir fest, welches Element den Counter zurücksetzt. In unserem Beispiel
 macht es Sinn den Fußnoten Counter bei jeder neuen Artikel überschrift zurückzusetzen, damit wir wieder
 bei 1 starten.
 
@@ -227,7 +289,7 @@ h1 {
 ```
 
 #### Darstellung
-Um den Counter anzuzeigen müssen wir ihn nur als content darstellen (hier z.B. vor der Fußnote):
+Um den Counter anzuzeigen müssen wir ihn nur als `content` darstellen (hier z.B. vor der Fußnote):
 ```CSS
 .footnote::before {
     content: counter(footnote);
@@ -236,8 +298,8 @@ Um den Counter anzuzeigen müssen wir ihn nur als content darstellen (hier z.B. 
 
 ### Paged Media Counters
 Der Browser erstellt automatisch beim Druck einer Webseite folgende Counter:
-- page (die aktuelle Seitenzahl)
-- pages (die Gesamtanzahl der Seiten)
+- `page` (die aktuelle Seitenzahl)
+- `pages` (die Gesamtanzahl der Seiten)
 
 Damit können wir Seitenzahlen in unsere Margin Boxen einfügen:
 ```CSS
@@ -254,7 +316,7 @@ Damit können wir Seitenzahlen in unsere Margin Boxen einfügen:
 
 ### Kolumnentitel
 Als letztes schauen wir uns noch an wie wir z.B. Titel von Artikeln in unsere Margin Boxen bekommen.
-Dafür brauchen wir die string-set Eigenschaft. Diese funktioniert wie eine Variable, die Text speichern kann.
+Dafür brauchen wir die `string-set` Eigenschaft. Diese funktioniert wie eine Variable, die Text speichern kann.
 Wie beim Counter geben wir an welches Element Einfluss auf diese hat. Wir können zum Beispiel den Textinhalt einer Überschrift
 als string-set speichern:
 
@@ -275,9 +337,9 @@ Und dann den Titel in unseren Margin Boxen darstellen:
 }
 ```
 Sollten auf unserer Seite mehrere h1 Elemente auftauchen können wir angeben welchen der Titel wir benutzen wollen:
-- first
-- last
-- start
+- `first`
+- `last`
+- `start`
 
 Wir wollen zum Beispiel immer den ersten Titel auf der Seite benutzen:
 ```CSS
@@ -290,7 +352,7 @@ Wir wollen zum Beispiel immer den ersten Titel auf der Seite benutzen:
 
 Hier gibt es noch einige andere Möglichkeiten, da hilft auch die [pagedjs Doku.](https://pagedjs.org/documentation/7-generated-content-in-margin-boxes/)
 
-### TOC
+### Exkurs: TOC
 Um ein Inhaltsverzeichnis mit den richtigen Seitennummern zu erstellen, legen wir unser Inhaltsverzeichnis als Links an.
 z.B.:
 
@@ -300,6 +362,14 @@ z.B.:
           <a href="#headline1">headline1</a>
         </li>
       </ul>
+```
+In userem Text wird die Headline dann mit der Id versehen:
+```HTML
+    <!-- ... -->
+    <h1 id="headline1">
+        Mein Titel
+    </h1>
+    <!-- ... -->
 ```
 
 Dies können wir manuell oder [mit JavaScript](https://pagedjs.org/posts/build-a-table-of-contents-from-your-html/) machen.
@@ -316,38 +386,10 @@ CSS füllt jetzt das Element mit einem Counter der Seite die das Ziel unseres Li
 
 ## Hilfreiche CSS-Regeln
 
-### @media print
-
-Um websites für verschiedene Geräte zu gestalten werden [media queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_media_queries/Using_media_queries) verwendet. Mit `@media print` können wir spezifisch für den Druck gestalten und mit `@media screen` für den Bildschirm.
-Pagedjs erkennt `@media print` im CSS und setzt die Regeln um.
-
-```CSS
-@media screen{
-    .no-print{
-        display:none;
-    }
-}
-```
-
-Hier haben wir zum Beispiel eine Klasse die im Druck nicht sichtbar ist.
-
-### break-before, break-after
-
-Wenn wir Elemente wie Aufmacher-Seiten, die immer auf einer Seite alleine sind, haben, dann können wir festlegen das vor und/oder nach ihnen immer das Seitenlayout umgebrochen wird.
-
-```CSS
-.hero{
-    break-after: page;
-    break-before: page;
-}
-```
-
-- [break-after](https://developer.mozilla.org/en-US/docs/Web/CSS/break-after?retiredLocale=de)
-- [break-before](https://developer.mozilla.org/en-US/docs/Web/CSS/break-before)
-
 ### columns
 
-Wir können die [CSS-Columns-Regel](https://developer.mozilla.org/en-US/docs/Web/CSS/columns) nutzen wenn wir Text in mehrspaltigen Layouts laufen lassen wollen. Mit CSS Grid kann pagedjs nicht umgehen.
+Wir können die [CSS-Columns-Regel](https://developer.mozilla.org/en-US/docs/Web/CSS/columns) nutzen, wenn wir Text in mehrspaltigen Layouts laufen lassen wollen.
+Der Vorteil von columns gegenüber einem css grid ist der Umfluss der im Print besser funktioniert.
 
 ```CSS
 .multi-column{
@@ -359,8 +401,28 @@ Wir können die [CSS-Columns-Regel](https://developer.mozilla.org/en-US/docs/Web
 
 Um spalten umzubrechen können wir `break-after` und `break-before` mit `column` nutzen.
 
+### widows, orphans
+`widows` legen fest wieviele Zeilen Text am Anfang einer Seite/Spalte mindestens stehen sollen.
+
+`orphans` legen fest wieviele Zeilen Text vor einem Seiten-/Spaltenumbruch mindestens stehen sollen.
+
+```CSS
+p {
+    widows: 2;
+    orphans: 3;
+}
+```
+
 ### floated Elemente
 
-## Imposition plugin
+Für Elemente die vom Text umfloßen werden sollen gibt es die CSS Eigenschaft `float`.
+[MDN link](https://developer.mozilla.org/en-US/docs/Web/CSS/float)
 
-[Gitlab](https://gitlab.coko.foundation/pagedjs/pagedjs-plugins/booklet-imposition)
+## Javascript Hooks
+Für noch mehr Kontrolle stellt [pagedjs hooks](https://pagedjs.org/documentation/10-handlers-hooks-and-custom-javascript/) zur Verfügung, an die man sich an gewissen Momenten der
+Generierung der Druckvorschau hängen kann. (Für Fortgeschrittene)
+## Plugins
+
+- [Imposition](https://gitlab.coko.foundation/pagedjs/pagedjs-plugins/booklet-imposition) (zum Ausschießen von Broschüren)
+- [full-page](https://gitlab.coko.foundation/pagedjs/pagedjs-plugins/full-page) (um Bilder oder andere Elemente vollflächig auf einer Seite darzustellen; geht aber auch einfach mit purem CSS)
+- [table of content](https://gitlab.coko.foundation/pagedjs/pagedjs-plugins/table-of-content) (um ein Inhaltsverzeichnis zu erstellen)
