@@ -443,7 +443,7 @@ Der Vorteil von columns gegenüber einem css grid ist der Umfluss der im Print b
 
 Um spalten umzubrechen können wir `break-after` und `break-before` mit `column` nutzen.
 
-### widows, orphans
+### widows, orphans (NUR CHROME)
 
 `widows` legen fest wie viele Zeilen Text am Anfang einer Seite/Spalte mindestens stehen sollen.
 
