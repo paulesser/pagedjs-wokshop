@@ -1,0 +1,100 @@
+@page {
+    size: 240mm 240mm;
+    bleed: 3mm;
+}
+
+@page:left {
+    margin: 4mm 20mm 10mm 8mm;
+    background: linear-gradient( -30deg, lightgoldenrodyellow, white);
+    @bottom-center {
+        content: string(article, first);
+    }
+    @bottom-left {
+        content: counter(page) " von " counter(pages);
+        font-size: 16pt;
+        color: lightcoral;
+    }
+}
+@page:right {
+    margin: 4mm 8mm 10mm 20mm;
+    background: linear-gradient( 30deg, lightcoral, white);
+    @bottom-center {
+        content: string(img);
+    }
+    @bottom-right {
+        content: counter(page);
+        font-size: 16pt;
+    }
+}
+@page:first {
+    background: white;
+}
+p {
+    font-family: sans-serif;
+    font-size: 16px;
+}
+figure {
+    margin: 0;
+    width: 100%;
+}
+img {
+    width: 100%;
+    height: auto;
+    string-set: img attr(src)
+}
+.introduction {
+    page: Introduction;
+}
+@page Introduction {
+    background: linear-gradient(30deg, orange 0 , white 50%);
+}
+
+@media print {
+    p {
+        font-size: 12pt;
+    }
+    .no-print {
+        display: none;
+    }
+    h1 {
+        break-before: left;
+        break-after: page;
+        font-size: 40pt;
+        text-transform: uppercase;
+        transform: skewX(30deg) scaleX(1.2);
+        transform-origin: 0 0;
+    }
+    h2 {
+        break-before: left;
+        string-set: article content(text);
+        /* @page ... content: string(article); */
+    }
+    figure {
+        break-inside: avoid;
+    }
+    ul li a::after {
+        content: " Seite: " target-counter(attr(href), page);
+        text-decoration: none;
+        color: black;
+    }
+    figure {
+        width: 30%;
+        float: left;
+        clear: left;
+        margin-right: 4mm;
+    }
+
+}
+:root {
+    --lars-font-size: 16pt;
+}
+figcaption {
+    font-size: var(--lars-font-size);
+    padding: 0 var(--pagedjs-bleed-left);
+}
+.pagedjs_left_page figure {
+        margin-left: calc(-1* (var(--pagedjs-bleed-left) + var(--pagedjs-margin-left)))
+}
+.pagedjs_right_page figure {
+        margin-left: calc((var(--pagedjs-bleed-right) + var(--pagedjs-margin-right)))
+}
