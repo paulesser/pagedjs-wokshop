@@ -174,7 +174,22 @@ Wenn wir Elemente wie Aufmacher-Seiten, die immer auf einer Seite alleine sind, 
 }
 ```
 
+- [break-after](https://developer.mozilla.org/en-US/docs/Web/CSS/break-after?retiredLocale=de)
+- [break-before](https://developer.mozilla.org/en-US/docs/Web/CSS/break-before)
+
 ### columns
+
+Wir können die [CSS-Columns-Regel](https://developer.mozilla.org/en-US/docs/Web/CSS/columns) nutzen wenn wir Text in mehrspaltigen Layouts laufen lassen wollen. Mit CSS Grid kann pagedjs nicht umgehen.
+
+```CSS
+.multi-column{
+    columns: 2 100mm; //shorthand
+    column-count: 2;
+    column-width: 100mm
+}
+```
+
+Um spalten umzubrechen können wir `break-after` und `break-before` mit `column` nutzen.
 
 ### floated Elemente
 
